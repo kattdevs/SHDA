@@ -66,24 +66,25 @@ export default function Hero() {
         </motion.p>
 
         {/* CTAs */}
+        {/* CTAs */}
         <motion.div
           variants={line}
           className="mt-12 flex flex-wrap items-center justify-center gap-4"
         >
-          
+          <a
             href="/work"
             className="bg-navy text-white font-body text-sm font-semibold px-8 py-4 hover:bg-gold transition-colors duration-300"
           >
             View Our Work
           </a>
-          
+          <a
             href="/contact"
             className="border border-navy text-navy font-body text-sm font-semibold px-8 py-4 hover:bg-navy hover:text-white transition-colors duration-300"
           >
             Start a Project
           </a>
         </motion.div>
-      </motion.div>
+        </motion.div>
     </section>
   )
 }

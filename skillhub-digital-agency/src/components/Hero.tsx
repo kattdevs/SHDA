@@ -35,40 +35,40 @@ export default function Hero() {
         animate="show"
         className="max-w-5xl mx-auto"
       >
-        {/* Headline — drops in */}
+        {/* Headline */}
         <h1
-          className="font-display font-black text-navy leading-[1.05] tracking-tight"
-          style={{ fontSize: 'clamp(3.2rem, 9vw, 7.5rem)' }}
+          className="font-display text-navy leading-[0.95] tracking-wide uppercase"
+          style={{ fontSize: 'clamp(4rem, 11vw, 10rem)' }}
         >
           <motion.span variants={dropIn} className="block">
-            We <em className="italic">build</em> digital
+            We Build Digital
           </motion.span>
           <motion.span variants={dropIn} className="block">
-            experiences that
+            Experiences That
           </motion.span>
           <motion.span variants={dropIn} className="block">
-            drive <em className="italic text-gold">real growth.</em>
+            Drive Real Growth.
           </motion.span>
         </h1>
 
-        {/* Gold divider — fades up */}
+        {/* Gold divider */}
         <motion.div
           variants={fadeUp}
           className="mx-auto mt-10 mb-10 w-12 h-[3px] bg-gold"
         />
 
-        {/* Subheading — fades up */}
+        {/* Subheading */}
         <motion.p
           variants={fadeUp}
-          className="font-display italic text-navy/60 max-w-2xl mx-auto leading-relaxed"
-          style={{ fontSize: 'clamp(1.1rem, 2vw, 1.45rem)' }}
+          className="font-body text-navy/60 max-w-2xl mx-auto leading-relaxed"
+          style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)' }}
         >
           A team of strategists, designers, and developers united by craft,
           curiosity, and the ambition to build brands that last across Africa
           and beyond.
         </motion.p>
 
-        {/* CTAs — fades up */}
+        {/* CTAs */}
         <motion.div
           variants={fadeUp}
           className="mt-12 flex flex-wrap items-center justify-center gap-4"
@@ -83,7 +83,6 @@ export default function Hero() {
             href="/contact"
             className="border border-navy text-navy font-body text-sm font-semibold px-8 py-4 hover:bg-navy hover:text-white transition-colors duration-300"
           >
-            
             Start a Project
           </a>
         </motion.div>

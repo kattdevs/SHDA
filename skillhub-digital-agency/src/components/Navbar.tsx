@@ -33,12 +33,12 @@ export default function Navbar() {
         }}
       >
         <Link
-          href="/"
-          style={{ fontFamily: 'var(--font-masthead)', letterSpacing: '0.15em' }}
-          className="pointer-events-auto text-[#0E202F] font-bold text-3xl uppercase"
-        >
-          Skill<em className="text-[#E0CE00] not-italic">Hub</em>
-        </Link>
+  href="/"
+  style={{ fontFamily: 'var(--font-masthead)', letterSpacing: '0.15em', fontWeight: 900 }}
+  className="pointer-events-auto text-[#0E202F] text-3xl uppercase"
+>
+  SkillHub
+</Link>
       </div>
 
       {/* Left floating block — logo cube + nav links */}

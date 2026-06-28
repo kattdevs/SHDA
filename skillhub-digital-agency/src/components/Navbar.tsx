@@ -27,13 +27,17 @@ export default function Navbar() {
       {/* SkillHub wordmark — fixed centre, fades out on scroll */}
       <div
         className="fixed top-0 left-0 right-0 z-50 flex justify-center items-center h-28 pointer-events-none transition-all duration-500"
-        style={{ opacity: scrolled ? 0 : 1, transform: scrolled ? 'translateY(-10px)' : 'translateY(0)' }}
+        style={{
+          opacity: scrolled ? 0 : 1,
+          transform: scrolled ? 'translateY(-10px)' : 'translateY(0)',
+        }}
       >
         <Link
           href="/"
-          className="pointer-events-auto text-[#0E202F] font-bold text-lg tracking-[0.2em] uppercase"
+          style={{ fontFamily: 'var(--font-masthead)', letterSpacing: '0.15em' }}
+          className="pointer-events-auto text-[#0E202F] font-bold text-3xl uppercase"
         >
-          SkillHub
+          Skill<em className="text-[#E0CE00] not-italic">Hub</em>
         </Link>
       </div>
 
@@ -47,37 +51,42 @@ export default function Navbar() {
       >
         <div className="flex flex-col gap-1">
 
-          {/* Logo cube — visible when scrolled */}
+          {/* Logo cube container — collapses to 0 when not scrolled */}
           <div
-            className="relative w-11 h-11 rounded-lg bg-[#0E202F] flex items-center justify-center group cursor-pointer mb-1 transition-all duration-500"
-            style={{
-              opacity: scrolled ? 1 : 0,
-              transform: scrolled ? 'translateY(0) scale(1)' : 'translateY(-8px) scale(0.8)',
-              pointerEvents: scrolled ? 'auto' : 'none',
-            }}
+            className="overflow-hidden transition-all duration-500"
+            style={{ height: scrolled ? '48px' : '0px' }}
           >
-            <div className="absolute inset-0 rounded-lg border-2 border-[#E0CE00]/0 group-hover:border-[#E0CE00]/80 transition-all duration-500" />
             <div
-              className="absolute w-16 h-16 rounded-full opacity-10 group-hover:opacity-30 transition-opacity duration-500"
+              className="relative w-11 h-11 rounded-lg bg-[#0E202F] flex items-center justify-center group cursor-pointer transition-all duration-500"
               style={{
-                background: 'radial-gradient(circle, #E0CE00 0%, transparent 70%)',
-                animation: 'spin 4s linear infinite',
+                opacity: scrolled ? 1 : 0,
+                transform: scrolled ? 'translateY(0) scale(1)' : 'translateY(-8px) scale(0.8)',
+                pointerEvents: scrolled ? 'auto' : 'none',
               }}
-            />
-            <div
-              className="absolute inset-0 rounded-lg"
-              style={{ animation: 'pulse-ring 2.5s ease-out infinite' }}
-            />
-            <Image
-              src="/SH_Digital_Logo_Icon_transparent.png"
-              alt="SkillHub logo"
-              width={30}
-              height={30}
-              className="relative z-10 object-contain"
-            />
+            >
+              <div className="absolute inset-0 rounded-lg border-2 border-[#E0CE00]/0 group-hover:border-[#E0CE00]/80 transition-all duration-500" />
+              <div
+                className="absolute w-16 h-16 rounded-full opacity-10 group-hover:opacity-30 transition-opacity duration-500"
+                style={{
+                  background: 'radial-gradient(circle, #E0CE00 0%, transparent 70%)',
+                  animation: 'spin 4s linear infinite',
+                }}
+              />
+              <div
+                className="absolute inset-0 rounded-lg"
+                style={{ animation: 'pulse-ring 2.5s ease-out infinite' }}
+              />
+              <Image
+                src="/SH_Digital_Logo_Icon_transparent.png"
+                alt="SkillHub logo"
+                width={30}
+                height={30}
+                className="relative z-10 object-contain"
+              />
+            </div>
           </div>
 
-          {/* Nav links — always visible */}
+          {/* Nav links — always in same position */}
           <ul className="hidden md:flex flex-col gap-0.5">
             {navLinks.map((link) => (
               <li key={link.label}>

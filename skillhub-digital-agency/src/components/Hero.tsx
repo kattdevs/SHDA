@@ -106,12 +106,6 @@ export default function Hero() {
 
       {/* Top — centered headline */}
       <div className="flex flex-col items-center justify-center pt-40 pb-20 px-6 text-center">
-        <p
-          style={{ fontFamily: 'var(--font-display)', letterSpacing: '0.3em' }}
-          className="text-xs uppercase mb-6 text-[#0E202F]/50"
-        >
-          SkillHub Digital Agency
-        </p>
 
         <h1
           style={{ fontFamily: 'var(--font-playfair)', lineHeight: 1.05 }}

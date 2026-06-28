@@ -32,10 +32,14 @@ export default function Navbar() {
           transform: scrolled ? 'translateY(-10px)' : 'translateY(0)',
         }}
       >
-        <Link
+      <Link
   href="/"
-  style={{ fontFamily: 'var(--font-masthead)', letterSpacing: '0.15em', fontWeight: 900 }}
-  className="pointer-events-auto text-[#0E202F] text-3xl uppercase"
+  style={{
+    fontFamily: 'var(--font-masthead)',
+    letterSpacing: '0.15em',
+    WebkitTextStroke: '0.5px #0E202F',
+  }}
+  className="pointer-events-auto text-[#0E202F] font-bold text-3xl uppercase"
 >
   SkillHub
 </Link>

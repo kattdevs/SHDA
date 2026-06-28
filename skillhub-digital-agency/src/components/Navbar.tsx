@@ -1,191 +1,149 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
+  { label: 'Agency', href: '/agency' },
   { label: 'Services', href: '/services' },
-  { label: 'Contact', href: '/contact' },
 ]
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [hovered, setHovered] = useState<string | null>(null)
+  const [scrolled, setScrolled] = useState(false)
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
-  }, [mobileOpen])
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 60)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <>
-      {/* Floating Navbar */}
-      <motion.div
-        initial={{ y: -30, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed top-5 left-0 right-0 z-50 flex justify-center px-4"
+      {/* SkillHub wordmark — fixed centre, fades out on scroll */}
+      <div
+        className="fixed top-0 left-0 right-0 z-50 flex justify-center items-center h-28 pointer-events-none transition-all duration-500"
+        style={{ opacity: scrolled ? 0 : 1, transform: scrolled ? 'translateY(-10px)' : 'translateY(0)' }}
       >
-        <nav
-          className="w-full flex items-center justify-between px-8 rounded-none md:rounded-2xl"
-          style={{
-            maxWidth: '1200px',
-            height: '72px',
-            background: 'rgba(7, 15, 43, 0.85)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.10)',
-          }}
+        <Link
+          href="/"
+          className="pointer-events-auto text-[#0E202F] font-bold text-lg tracking-[0.2em] uppercase"
         >
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            {/* Gold accent icon */}
-            <motion.div
-              whileHover={{ rotate: 90 }}
-              transition={{ duration: 0.3 }}
-              className="w-5 h-5 flex-shrink-0"
-            >
-              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="7" height="7" fill="#D4AF37" />
-                <rect x="11" y="2" width="7" height="7" fill="#D4AF37" opacity="0.5" />
-                <rect x="2" y="11" width="7" height="7" fill="#D4AF37" opacity="0.5" />
-                <rect x="11" y="11" width="7" height="7" fill="#D4AF37" />
-              </svg>
-            </motion.div>
-            <span className="font-display text-white text-[1rem] tracking-[0.12em] uppercase">
-              SkillHub{' '}
-              <span style={{ color: '#D4AF37' }}>Digital</span>
-            </span>
-          </Link>
+          SkillHub
+        </Link>
+      </div>
 
-          {/* Desktop Nav Links */}
-          <ul className="hidden md:flex items-center gap-8">
+      {/* Left floating block — logo cube + nav links */}
+      <div
+        className="fixed z-50 transition-all duration-500"
+        style={{
+          top: scrolled ? '24px' : '28px',
+          left: scrolled ? '24px' : '32px',
+        }}
+      >
+        <div className="flex flex-col gap-1">
+
+          {/* Logo cube — visible when scrolled */}
+          <div
+            className="relative w-11 h-11 rounded-lg bg-[#0E202F] flex items-center justify-center group cursor-pointer mb-1 transition-all duration-500"
+            style={{
+              opacity: scrolled ? 1 : 0,
+              transform: scrolled ? 'translateY(0) scale(1)' : 'translateY(-8px) scale(0.8)',
+              pointerEvents: scrolled ? 'auto' : 'none',
+            }}
+          >
+            <div className="absolute inset-0 rounded-lg border-2 border-[#E0CE00]/0 group-hover:border-[#E0CE00]/80 transition-all duration-500" />
+            <div
+              className="absolute w-16 h-16 rounded-full opacity-10 group-hover:opacity-30 transition-opacity duration-500"
+              style={{
+                background: 'radial-gradient(circle, #E0CE00 0%, transparent 70%)',
+                animation: 'spin 4s linear infinite',
+              }}
+            />
+            <div
+              className="absolute inset-0 rounded-lg"
+              style={{ animation: 'pulse-ring 2.5s ease-out infinite' }}
+            />
+            <Image
+              src="/SH_Digital_Logo_Icon_transparent.png"
+              alt="SkillHub logo"
+              width={30}
+              height={30}
+              className="relative z-10 object-contain"
+            />
+          </div>
+
+          {/* Nav links — always visible */}
+          <ul className="hidden md:flex flex-col gap-0.5">
             {navLinks.map((link) => (
               <li key={link.label}>
                 <Link
                   href={link.href}
-                  onMouseEnter={() => setHovered(link.label)}
-                  onMouseLeave={() => setHovered(null)}
-                  className="relative font-body text-[0.75rem] uppercase tracking-[0.18em] text-white/70 hover:text-[#D4AF37] transition-colors duration-300 pb-1 block"
+                  className="text-[11px] uppercase tracking-widest text-[#0E202F] hover:text-[#E0CE00] transition-colors duration-200"
                 >
                   {link.label}
-                  {/* Animated gold underline */}
-                  <motion.span
-                    className="absolute bottom-0 left-0 h-[1px] bg-[#D4AF37]"
-                    initial={{ width: 0 }}
-                    animate={{ width: hovered === link.label ? '100%' : 0 }}
-                    transition={{ duration: 0.25, ease: 'easeOut' }}
-                  />
                 </Link>
               </li>
             ))}
           </ul>
+        </div>
+      </div>
 
-          {/* CTA Button */}
-          <motion.div
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className="hidden md:block flex-shrink-0"
-          >
+      {/* Right floating block — Let's Connect */}
+      <div
+        className="fixed z-50 transition-all duration-500"
+        style={{
+          top: scrolled ? '24px' : '40px',
+          right: scrolled ? '24px' : '32px',
+        }}
+      >
+        <Link
+          href="/contact"
+          style={{ fontFamily: 'var(--font-playfair)', letterSpacing: '0.05em' }}
+          className="text-base font-bold italic text-white bg-[#0E202F] px-6 py-3 hover:bg-[#E0CE00] hover:text-[#0E202F] transition-all duration-300"
+        >
+          Let's Connect
+        </Link>
+      </div>
+
+      {/* Mobile hamburger */}
+      <div className="fixed top-6 right-6 z-50 md:hidden">
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="text-[#0E202F] text-sm uppercase tracking-widest hover:text-[#E0CE00] transition-colors duration-200"
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? 'Close' : 'Menu'}
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 bg-white flex flex-col justify-center px-8 gap-6 md:hidden">
+          {navLinks.map((link) => (
             <Link
-              href="/contact"
-              className="font-body text-[0.72rem] uppercase tracking-[0.18em] font-bold text-navy px-6 py-2.5 rounded-sm"
-              style={{
-                background: 'linear-gradient(135deg, #D4AF37 0%, #F0D060 50%, #D4AF37 100%)',
-                boxShadow: '0 0 20px rgba(212, 175, 55, 0.35)',
-              }}
+              key={link.label}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+              className="text-2xl uppercase tracking-widest text-[#0E202F]/70 hover:text-[#E0CE00] transition-colors duration-200"
             >
-              Start a Project
+              {link.label}
             </Link>
-          </motion.div>
-
-          {/* Hamburger — mobile */}
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="md:hidden flex flex-col gap-[5px] p-2"
-            aria-label="Open menu"
+          ))}
+          <Link
+            href="/contact"
+            onClick={() => setMobileOpen(false)}
+            style={{ fontFamily: 'var(--font-playfair)', letterSpacing: '0.05em' }}
+            className="mt-4 text-base font-bold italic text-white bg-[#0E202F] px-6 py-3 text-center hover:bg-[#E0CE00] hover:text-[#0E202F] transition-all duration-300"
           >
-            <span className="w-6 h-[1.5px] bg-white block" />
-            <span className="w-4 h-[1.5px] bg-white block" />
-            <span className="w-6 h-[1.5px] bg-white block" />
-          </button>
-        </nav>
-      </motion.div>
-
-      {/* Mobile Full-Screen Overlay */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, y: '-100%' }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: '-100%' }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[60] flex flex-col px-8 py-10"
-            style={{ background: 'rgba(7, 15, 43, 0.98)' }}
-          >
-            {/* Close button */}
-            <div className="flex justify-between items-center mb-16">
-              <span className="font-display text-white text-[1rem] tracking-[0.12em] uppercase">
-                SkillHub <span style={{ color: '#D4AF37' }}>Digital</span>
-              </span>
-              <button
-                onClick={() => setMobileOpen(false)}
-                className="text-white/60 hover:text-white transition-colors p-2"
-                aria-label="Close menu"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Mobile links */}
-            <ul className="flex flex-col gap-8 flex-1 justify-center">
-              {navLinks.map((link, i) => (
-                <motion.li
-                  key={link.label}
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="font-display text-white uppercase tracking-wider hover:text-[#D4AF37] transition-colors duration-300"
-                    style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)' }}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
-
-            {/* Mobile CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-            >
-              <Link
-                href="/contact"
-                onClick={() => setMobileOpen(false)}
-                className="inline-block font-body text-[0.75rem] uppercase tracking-[0.2em] font-bold text-navy px-8 py-4"
-                style={{
-                  background: 'linear-gradient(135deg, #D4AF37 0%, #F0D060 50%, #D4AF37 100%)',
-                  boxShadow: '0 0 24px rgba(212, 175, 55, 0.4)',
-                }}
-              >
-                Start a Project
-              </Link>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            Let's Connect
+          </Link>
+        </div>
+      )}
     </>
   )
 }

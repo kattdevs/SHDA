@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Bebas_Neue, Inter } from 'next/font/google'
+import { Bebas_Neue, Inter, Playfair_Display, DM_Sans, Cormorant_Garamond } from 'next/font/google'
 import './globals.css'
 
 const bebasNeue = Bebas_Neue({
@@ -13,19 +13,38 @@ const inter = Inter({
   variable: '--font-body',
 })
 
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['700'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
+})
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400'],
+  variable: '--font-dm-sans',
+})
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['700'],
+  style: ['normal', 'italic'],
+  variable: '--font-masthead',
+})
+
 export const metadata: Metadata = {
   title: 'SkillHub Digital Agency',
-  description: 'A pan-African digital agency building brands that last.',
+  description: 'Strategy, design, and development for ambitious brands.',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${bebasNeue.variable} ${inter.variable}`}>
-      <body className="antialiased">{children}</body>
+    <html
+      lang="en"
+      className={`${bebasNeue.variable} ${inter.variable} ${playfair.variable} ${dmSans.variable} ${cormorant.variable}`}
+    >
+      <body>{children}</body>
     </html>
   )
 }

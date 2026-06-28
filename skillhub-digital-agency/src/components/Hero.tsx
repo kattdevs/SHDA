@@ -1,277 +1,172 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
+import * as THREE from 'three'
 
-// --- Gold particle canvas ---
-function GoldParticles() {
+export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
 
-    let animId: number
-    const W = canvas.offsetWidth
-    const H = canvas.offsetHeight
-    canvas.width = W
-    canvas.height = H
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
+    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight)
 
-    const COUNT = 55
-    const particles = Array.from({ length: COUNT }, () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: Math.random() * 2.2 + 0.4,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.35,
-      alpha: Math.random() * 0.6 + 0.2,
-    }))
+    const scene = new THREE.Scene()
 
-    const draw = () => {
-      ctx.clearRect(0, 0, W, H)
-      for (const p of particles) {
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(212, 175, 55, ${p.alpha})`
-        ctx.fill()
-        p.x += p.vx
-        p.y += p.vy
-        if (p.x < 0 || p.x > W) p.vx *= -1
-        if (p.y < 0 || p.y > H) p.vy *= -1
-      }
-      animId = requestAnimationFrame(draw)
+    const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
+    camera.position.set(0, 0, 5)
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.4)
+    scene.add(ambient)
+
+    // Key light — yellow/gold from palette
+    const keyLight = new THREE.DirectionalLight(0xe0ce00, 3.5)
+    keyLight.position.set(3, 4, 3)
+    scene.add(keyLight)
+
+    // Fill light — navy tint
+    const fillLight = new THREE.DirectionalLight(0x0e202f, 1.5)
+    fillLight.position.set(-3, -1, 2)
+    scene.add(fillLight)
+
+    // Rim light — white
+    const rimLight = new THREE.DirectionalLight(0xffffff, 1)
+    rimLight.position.set(0, -4, -3)
+    scene.add(rimLight)
+
+    // Main shape — gold from palette
+    const material = new THREE.MeshStandardMaterial({
+      color: 0xe0ce00,
+      metalness: 0.85,
+      roughness: 0.12,
+    })
+
+    const knotGeo = new THREE.TorusKnotGeometry(1, 0.32, 200, 32, 2, 3)
+    const knot = new THREE.Mesh(knotGeo, material)
+    scene.add(knot)
+
+    // Orb — navy
+    const orbMat = new THREE.MeshStandardMaterial({
+      color: 0x0e202f,
+      metalness: 1,
+      roughness: 0.1,
+    })
+    const orb = new THREE.Mesh(new THREE.SphereGeometry(0.18, 32, 32), orbMat)
+    orb.position.set(1.8, 1.4, 0.5)
+    scene.add(orb)
+
+    // Cube — dark
+    const cubeMat = new THREE.MeshStandardMaterial({
+      color: 0x0a0b0a,
+      metalness: 0.85,
+      roughness: 0.2,
+    })
+    const cube = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.22, 0.22), cubeMat)
+    cube.position.set(-1.9, -1.2, 0.3)
+    scene.add(cube)
+
+    const handleResize = () => {
+      if (!canvas) return
+      const w = canvas.clientWidth
+      const h = canvas.clientHeight
+      renderer.setSize(w, h, false)
+      camera.aspect = w / h
+      camera.updateProjectionMatrix()
     }
+    window.addEventListener('resize', handleResize)
 
-    draw()
-    return () => cancelAnimationFrame(animId)
+    let frame = 0
+    const animate = () => {
+      frame = requestAnimationFrame(animate)
+      const t = Date.now() * 0.001
+      knot.rotation.x = t * 0.18
+      knot.rotation.y = t * 0.26
+      orb.position.y = 1.4 + Math.sin(t * 0.9) * 0.18
+      orb.position.x = 1.8 + Math.cos(t * 0.6) * 0.1
+      cube.rotation.x = t * 0.4
+      cube.rotation.y = t * 0.3
+      cube.position.y = -1.2 + Math.sin(t * 0.7 + 1) * 0.14
+      renderer.render(scene, camera)
+    }
+    animate()
+
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('resize', handleResize)
+      renderer.dispose()
+    }
   }, [])
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      aria-hidden="true"
-    />
-  )
-}
+    <section className="min-h-screen bg-white flex flex-col">
 
-// --- Animated gold ring ---
-function GoldRing() {
-  return (
-    <motion.div
-      className="absolute right-[8%] top-1/2 -translate-y-1/2 hidden lg:block"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1.2, delay: 1.4, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-        className="w-[280px] h-[280px] rounded-full border border-gold/20 flex items-center justify-center"
-      >
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-          className="w-[200px] h-[200px] rounded-full border border-gold/30 flex items-center justify-center"
+      {/* Top — centered headline */}
+      <div className="flex flex-col items-center justify-center pt-40 pb-20 px-6 text-center">
+        <p
+          style={{ fontFamily: 'var(--font-display)', letterSpacing: '0.3em' }}
+          className="text-xs uppercase mb-6 text-[#0E202F]/50"
         >
-          <div className="w-[120px] h-[120px] rounded-full border-2 border-gold/60 flex items-center justify-center">
-            <div className="w-3 h-3 rounded-full bg-gold" />
-          </div>
-        </motion.div>
-      </motion.div>
+          SkillHub Digital Agency
+        </p>
 
-      {/* Orbiting dot */}
-      <motion.div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-gold"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
-        style={{ transformOrigin: '0 140px' }}
-      />
-    </motion.div>
-  )
-}
-
-// --- Word reveal animation ---
-const wordVariants = {
-  hidden: { opacity: 0, y: 60, skewY: 4 },
-  show: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    skewY: 0,
-    transition: {
-      duration: 0.9,
-      delay: i * 0.08,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
-  }),
-}
-
-const line1 = ['Transforming', 'Ideas']
-const line2 = ['Into', 'Digital']
-const line3 = ['Experiences']
-
-export default function Hero() {
-  return (
-    <section className="relative min-h-screen bg-white flex flex-col justify-center overflow-hidden pt-20">
-
-      {/* Subtle navy gradient top-left */}
-      <div
-        className="absolute top-0 left-0 w-[600px] h-[600px] pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at top left, rgba(7,26,61,0.04) 0%, transparent 70%)',
-        }}
-        aria-hidden="true"
-      />
-
-      {/* Gold particles */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <GoldParticles />
-      </div>
-
-      {/* Rotating rings */}
-      <GoldRing />
-
-      {/* Main content */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-8 md:px-14 w-full py-24">
-
-        {/* Eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="flex items-center gap-3 mb-12"
+        <h1
+          style={{ fontFamily: 'var(--font-playfair)', lineHeight: 1.05 }}
+          className="text-[clamp(2.8rem,8vw,6.5rem)] font-bold text-[#0E202F] max-w-4xl"
         >
-          <div className="w-8 h-[1px] bg-gold" />
-          <span className="font-body text-[0.7rem] uppercase tracking-[0.3em] text-gold">
-            Premium Digital Agency
-          </span>
-        </motion.div>
-
-        {/* Headline */}
-        <h1 className="font-display uppercase leading-[0.88] tracking-tight mb-12 max-w-[900px]"
-          style={{ fontSize: 'clamp(3.8rem, 10vw, 9.5rem)' }}
-        >
-          {/* Line 1 */}
-          <span className="block overflow-hidden">
-            {line1.map((word, i) => (
-              <motion.span
-                key={word}
-                custom={i}
-                variants={wordVariants}
-                initial="hidden"
-                animate="show"
-                className={`inline-block mr-[0.18em] ${
-                  word === 'Ideas'
-                    ? 'text-transparent'
-                    : 'text-navy'
-                }`}
-                style={
-                  word === 'Ideas'
-                    ? { WebkitTextStroke: '2px #071A3D' }
-                    : {}
-                }
-              >
-                {word}
-              </motion.span>
-            ))}
-          </span>
-
-          {/* Line 2 */}
-          <span className="block overflow-hidden">
-            {line2.map((word, i) => (
-              <motion.span
-                key={word}
-                custom={i + line1.length}
-                variants={wordVariants}
-                initial="hidden"
-                animate="show"
-                className={`inline-block mr-[0.18em] ${
-                  word === 'Digital' ? 'text-gold' : 'text-navy'
-                }`}
-              >
-                {word}
-              </motion.span>
-            ))}
-          </span>
-
-          {/* Line 3 */}
-          <span className="block overflow-hidden">
-            {line3.map((word, i) => (
-              <motion.span
-                key={word}
-                custom={i + line1.length + line2.length}
-                variants={wordVariants}
-                initial="hidden"
-                animate="show"
-                className="inline-block mr-[0.18em] text-navy"
-              >
-                {word}
-              </motion.span>
-            ))}
-          </span>
+          Transforming Ideas Into{' '}
+          <em
+            style={{ fontStyle: 'italic', fontFamily: 'var(--font-playfair)' }}
+            className="text-[#E0CE00]"
+          >
+            Digital Experiences
+          </em>
         </h1>
 
-        {/* Supporting copy + CTAs side by side */}
-        <div className="flex flex-col md:flex-row md:items-end gap-10 md:gap-20 max-w-[900px]">
+        <div className="w-16 h-px bg-[#0E202F]/20 mt-10" />
+      </div>
 
-          {/* Copy */}
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
-            className="font-body text-navy/55 leading-relaxed max-w-sm"
-            style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1.05rem)' }}
-          >
-            We craft powerful digital experiences that transform ambitious ideas
-            into engaging products, brands, and platforms that drive real
-            business growth.
-          </motion.p>
+      {/* Bottom — bio far left, 3D far right */}
+      <div className="flex-1 w-full flex flex-col md:flex-row items-center px-10 md:px-20 pb-24 gap-10">
 
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.15, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-wrap items-center gap-4 flex-shrink-0"
-          >
-            <Link
-              href="/contact"
-              className="group inline-flex items-center gap-3 bg-navy text-white font-body text-[0.75rem] uppercase tracking-[0.18em] font-semibold px-8 py-4 hover:bg-gold transition-colors duration-300"
-            >
-              Start Your Project
-              <svg
-                width="14" height="14" viewBox="0 0 24 24" fill="none"
-                className="stroke-white transition-transform duration-300 group-hover:translate-x-1"
-              >
-                <path d="M7 17L17 7M17 7H8M17 7V16" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </Link>
-            <Link
-              href="/work"
-              className="inline-flex items-center gap-2 font-body text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-navy border-b border-navy/30 pb-0.5 hover:border-gold hover:text-gold transition-colors duration-300"
-            >
-              View Our Work
-            </Link>
-          </motion.div>
+        {/* Left — bio */}
+        <div className="w-full md:w-[42%] flex flex-col gap-7">
+       <p
+  style={{ fontFamily: 'var(--font-dm-sans)', lineHeight: 1.85 }}
+  className="text-[1rem] font-semibold text-[#0E202F]/70"
+>
+  SkillHub Digital is based out of Sandton, Johannesburg but our designs 
+  and partnerships reach across Africa and beyond. We partner with ambitious 
+  brands to craft strategy-led design, high-performance web builds, and 
+  campaigns that actually convert. Our team of strategists, designers, and 
+  developers is dedicated to working with forward-thinking organisations to 
+  create custom digital solutions, compelling visual content, and brand 
+  experiences that leave a mark.
+</p>
+
+         <Link
+  href="/services"
+  style={{ fontFamily: 'var(--font-playfair)', letterSpacing: '0.05em' }}
+  className="self-start text-base font-bold italic text-white bg-[#0E202F] px-7 py-3 hover:bg-[#E0CE00] hover:text-[#0E202F] transition-colors duration-300"
+>
+  Our Services
+</Link>
         </div>
 
-        {/* Bottom scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.8 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        >
-          <span className="font-body text-[0.6rem] uppercase tracking-[0.3em] text-navy/30">Scroll</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-[1px] h-8 bg-gradient-to-b from-navy/30 to-transparent"
+        {/* Spacer */}
+        <div className="hidden md:block flex-1" />
+
+        {/* Right — 3D canvas */}
+        <div className="w-full md:w-[42%] aspect-square">
+          <canvas
+            ref={canvasRef}
+            className="w-full h-full block"
           />
-        </motion.div>
+        </div>
+
       </div>
     </section>
   )

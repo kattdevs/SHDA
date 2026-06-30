@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
+import About from '@/components/About'
 import Team from '@/components/Team'
 import Confessions from '@/components/Confessions'
 import Footer from '@/components/Footer'
@@ -9,6 +10,7 @@ export default function Home() {
     <main>
       <Navbar />
       <Hero />
+      <About />
       <Team />
       <Confessions />
       <Footer />

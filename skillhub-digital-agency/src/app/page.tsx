@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import About from '@/components/About'
 import Team from '@/components/Team'
-import Confessions from '@/components/Confessions'
+import Process from '@/components/Process'
 import Footer from '@/components/Footer'
 
 export default function Home() {
@@ -12,7 +12,7 @@ export default function Home() {
       <Hero />
       <About />
       <Team />
-      <Confessions />
+      <Process />
       <Footer />
     </main>
   )

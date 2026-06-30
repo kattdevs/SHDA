@@ -60,10 +60,7 @@ export default function Process() {
             How we bring your{" "}
             <span
               style={{
-                background: "linear-gradient(135deg, var(--gold-300) 0%, var(--gold-500) 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
+                color: "var(--gold-500, #D4BC2E)",
               }}
             >
               vision to life

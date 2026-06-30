@@ -31,14 +31,25 @@ export function TimelineContent({
   className,
   ...rest
 }: TimelineContentProps) {
-  const isInView = useInView(timelineRef, { once: true, amount: 0.2 })
+  const isInView = useInView(timelineRef, { once: true, amount: 0, margin: '0px 0px -10% 0px' })
+  const [forceVisible, setForceVisible] = useState(false)
+
+  // Safety net: if useInView never fires (ref timing, SSR edge cases, very
+  // tall sections), force the content visible after a short delay instead
+  // of leaving it permanently at opacity 0.
+  useEffect(() => {
+    const timer = setTimeout(() => setForceVisible(true), 1200)
+    return () => clearTimeout(timer)
+  }, [])
+
+  const shouldShow = isInView || forceVisible
   const MotionComponent = motion(Component as any)
 
   return (
     <MotionComponent
       custom={animationNum}
       initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
+      animate={shouldShow ? 'visible' : 'hidden'}
       variants={customVariants}
       className={className}
       {...rest}

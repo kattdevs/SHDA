@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { GlassButton, GlassFilter } from '@/components/ui/liquid-glass'
+import { LogoTimeline } from '@/components/ui/logo-timeline'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -97,6 +98,34 @@ const PnpmIcon = () => (
   </svg>
 )
 
+// ─── Industry icons ───────────────────────────────────────────────────────────
+
+const BldgIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
+const GovIcon  = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 22V12L12 3l9 9v10H3z"/><rect x="9" y="14" width="6" height="8"/></svg>
+const EduIcon  = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+const SkillIcon= () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+const NGOIcon  = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+const HealthIcon=() => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+const ShopIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+const FinIcon  = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+const AssocIcon= () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+const SMEIcon  = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+
+// ─── Industries data for LogoTimeline ─────────────────────────────────────────
+
+const INDUSTRY_ITEMS = [
+  { label: 'Corporate Organisations',       icon: <BldgIcon  />, animationDelay: 0,    animationDuration: 18, row: 1 },
+  { label: 'Government Departments',         icon: <GovIcon   />, animationDelay: -6,   animationDuration: 18, row: 1 },
+  { label: 'Educational Institutions',       icon: <EduIcon   />, animationDelay: -12,  animationDuration: 18, row: 1 },
+  { label: 'Skills Development Providers',   icon: <SkillIcon />, animationDelay: 0,    animationDuration: 22, row: 2 },
+  { label: 'NGOs & Non-Profits',             icon: <NGOIcon   />, animationDelay: -8,   animationDuration: 22, row: 2 },
+  { label: 'Healthcare Organisations',       icon: <HealthIcon/>, animationDelay: -16,  animationDuration: 22, row: 2 },
+  { label: 'Retail & E-Commerce',            icon: <ShopIcon  />, animationDelay: 0,    animationDuration: 20, row: 3 },
+  { label: 'Financial Services',             icon: <FinIcon   />, animationDelay: -7,   animationDuration: 20, row: 3 },
+  { label: 'Professional Associations',      icon: <AssocIcon />, animationDelay: -14,  animationDuration: 20, row: 3 },
+  { label: 'Small & Medium Enterprises',     icon: <SMEIcon   />, animationDelay: -4,   animationDuration: 20, row: 3 },
+]
+
 export default function AgencyPage() {
   useEffect(() => {
     const heroReveal = gsap.utils.toArray('.hero-reveal') as HTMLElement[]
@@ -118,11 +147,6 @@ export default function AgencyPage() {
         },
       }).fromTo(contentEl, { y: '50%' }, { y: '0%', ease: 'none' }, 0.2)
 
-      // Pin the section and animate each half independently —
-      // top half slides up out of view, bottom half slides down out of view,
-      // revealing the light "What We Believe" world behind them.
-      // The two split_items together look like ONE sentence because they are
-      // stacked flush. No clip-path on the header box itself.
       if (heroHeadings.length >= 2) {
         gsap.timeline({
           scrollTrigger: {
@@ -156,7 +180,6 @@ export default function AgencyPage() {
       })
     }
 
-    // Different speeds create the tumbling/falling effect
     parallaxScrollBySpeed('.hero-reveal__parallax-github', 15)
     parallaxScrollBySpeed('.hero-reveal__parallax-typescript', 9)
     parallaxScrollBySpeed('.hero-reveal__parallax-terminal', 5)
@@ -180,9 +203,8 @@ export default function AgencyPage() {
       <div className="agency-page-wrap">
         {/* ── 1. Big intro ── */}
         <section className="agency-intro">
-          <p className="agency-intro__eyebrow">SkillHub Digital Agency</p>
           <h1 className="agency-intro__heading">
-            Built on Vision.<br />Driven by Creativity.
+            OUR<br />STORY.
           </h1>
         </section>
 
@@ -227,13 +249,9 @@ export default function AgencyPage() {
         </section>
       </div>
 
-      {/* ── 3. GSAP reveal — full width needed for the clip animation ── */}
+      {/* ── 3. GSAP reveal ── */}
       <section className="hero-reveal">
         <article>
-          {/* The two split_items are required for the GSAP clip animation —
-              top half slides up, bottom half slides down, revealing the
-              content behind. There is only ONE visible text instance;
-              the second item is aria-hidden and only exists for the animation. */}
           <header className="hero-reveal__header">
             <div className="hero-reveal_split">
               <div className="hero-reveal_split_item">
@@ -248,7 +266,6 @@ export default function AgencyPage() {
           <div className="hero-reveal__content">
             <div className="hero-reveal__content-inner">
 
-              {/* Dev icons — rotated, positioned to overlap/fall across the text */}
               <div className="hero-reveal__parallax">
                 <div className="hero-reveal__parallax-github"><GitHubIcon /></div>
                 <div className="hero-reveal__parallax-typescript"><TypeScriptIcon /></div>
@@ -262,7 +279,6 @@ export default function AgencyPage() {
                 <div className="hero-reveal__parallax-pnpm"><PnpmIcon /></div>
               </div>
 
-              {/* Beliefs — readable article layout on the warm cream background */}
               <div className="hero-reveal__content-p">
                 <h2 className="beliefs-title">What We Believe</h2>
 
@@ -312,7 +328,7 @@ export default function AgencyPage() {
         </article>
       </section>
 
-      {/* ── 4. Closing (back to dark) ── */}
+      {/* ── 4. Closing (back to dark) — UNCHANGED ── */}
       <div className="agency-page-wrap">
         <section>
           <div className="agency-content--after">
@@ -340,6 +356,200 @@ export default function AgencyPage() {
         </section>
       </div>
 
+      {/* ── Divider ── */}
+      <div className="agency-page-wrap">
+        <div style={{ height: 1, background: 'linear-gradient(to right, transparent, rgba(212,188,46,0.35), transparent)', margin: '0 0' }} />
+      </div>
+
+      {/* ── 5. Industries We Serve — LogoTimeline ── */}
+      <div className="agency-page-wrap">
+        <div style={{ paddingTop: '4rem' }}>
+          <p
+            style={{
+              fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase',
+              color: 'var(--gold-500, #D4BC2E)', marginBottom: '0.75rem',
+              fontFamily: 'var(--font-dm-sans, sans-serif)',
+            }}
+          >
+            Industries We Serve
+          </p>
+          <h2
+            style={{
+              fontFamily: 'var(--font-geist-sans, sans-serif)',
+              fontWeight: 800,
+              fontSize: 'clamp(1.4rem, 3vw, 2rem)',
+              letterSpacing: '-0.02em',
+              color: '#ffffff',
+              marginBottom: 0,
+            }}
+          >
+            Built for the organisations shaping Africa&apos;s future
+          </h2>
+        </div>
+      </div>
+
+      <LogoTimeline
+        items={INDUSTRY_ITEMS}
+        title="Industries We Serve"
+        height="h-[320px]"
+        showRowSeparator={true}
+      />
+
+      {/* ── Divider ── */}
+      <div className="agency-page-wrap">
+        <div style={{ height: 1, background: 'linear-gradient(to right, transparent, rgba(212,188,46,0.35), transparent)', margin: '0 0' }} />
+      </div>
+
+      {/* ── 6. Why Choose SkillHub ── */}
+      <div className="agency-page-wrap">
+        <section style={{ paddingTop: '3rem', paddingBottom: '6rem' }}>
+          <p
+            style={{
+              fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase',
+              color: 'var(--gold-500, #D4BC2E)', marginBottom: '0.75rem',
+              fontFamily: 'var(--font-dm-sans, sans-serif)',
+            }}
+          >
+            Why Choose SkillHub
+          </p>
+          <h2
+            style={{
+              fontFamily: 'var(--font-geist-sans, sans-serif)',
+              fontWeight: 800,
+              fontSize: 'clamp(1.4rem, 3vw, 2rem)',
+              letterSpacing: '-0.02em',
+              color: '#ffffff',
+              marginBottom: '2.5rem',
+            }}
+          >
+            Five reasons our clients stay
+          </h2>
+
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {[
+              {
+                num: '01',
+                title: 'Industry Expertise',
+                body: 'Our experience across education, skills development, corporate training, consulting, government, and private sector enables us to develop solutions that address real business challenges — not generic ones.',
+              },
+              {
+                num: '02',
+                title: 'Client-Centred Approach',
+                body: 'We work closely with clients throughout the entire project lifecycle to ensure every solution aligns with their goals, budget, and operational requirements. Your success is how we measure ours.',
+              },
+              {
+                num: '03',
+                title: 'Innovation-Driven',
+                body: 'We leverage emerging technologies, modern development frameworks, and industry best practices to deliver future-ready digital solutions — built for today and designed to scale tomorrow.',
+              },
+              {
+                num: '04',
+                title: 'End-to-End Support',
+                body: 'From concept development and design through implementation, maintenance, and continuous improvement, we provide comprehensive support at every stage of your project.',
+              },
+              {
+                num: '05',
+                title: 'Quality and Reliability',
+                body: 'Every solution undergoes rigorous testing and quality assurance processes to ensure performance, security, and scalability. We do not ship until it is ready.',
+              },
+            ].map((reason) => (
+              <div
+                key={reason.num}
+                style={{
+                  display: 'flex', gap: 20, alignItems: 'flex-start',
+                  padding: '1.75rem 0',
+                  borderBottom: '1px solid rgba(255,255,255,0.05)',
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: 'var(--font-geist-sans, sans-serif)',
+                    fontWeight: 800, fontSize: '0.85rem',
+                    color: 'var(--gold-500, #D4BC2E)',
+                    letterSpacing: '0.05em', flexShrink: 0,
+                    paddingTop: 2, minWidth: 28,
+                  }}
+                >
+                  {reason.num}
+                </span>
+                <div style={{ flex: 1 }}>
+                  <h3
+                    style={{
+                      fontFamily: 'var(--font-geist-sans, sans-serif)',
+                      fontWeight: 700, fontSize: '1rem',
+                      color: '#ffffff', letterSpacing: '-0.01em',
+                      marginBottom: '0.4rem',
+                    }}
+                  >
+                    {reason.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-dm-sans, sans-serif)',
+                      fontSize: '0.9rem', fontWeight: 300,
+                      lineHeight: 1.75, color: 'rgba(255,255,255,0.55)',
+                      margin: 0,
+                    }}
+                  >
+                    {reason.body}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Final CTA */}
+          <div style={{ textAlign: 'center', paddingTop: '4rem' }}>
+            <p
+              style={{
+                fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase',
+                color: 'var(--gold-500, #D4BC2E)', marginBottom: '1rem',
+                fontFamily: 'var(--font-dm-sans, sans-serif)',
+              }}
+            >
+              Ready to get started?
+            </p>
+            <h2
+              style={{
+                fontFamily: 'var(--font-geist-sans, sans-serif)',
+                fontWeight: 800,
+                fontSize: 'clamp(1.6rem, 4vw, 2.5rem)',
+                letterSpacing: '-0.03em',
+                color: '#ffffff',
+                lineHeight: 1.15,
+                marginBottom: '1.25rem',
+              }}
+            >
+              Transform your ideas into<br />
+              <span style={{ color: 'var(--gold-500, #D4BC2E)' }}>
+                powerful digital solutions
+              </span>
+            </h2>
+            <p
+              style={{
+                fontFamily: 'var(--font-dm-sans, sans-serif)',
+                fontSize: '0.95rem', fontWeight: 300,
+                lineHeight: 1.8, color: 'rgba(255,255,255,0.5)',
+                maxWidth: 520, margin: '0 auto 2rem',
+              }}
+            >
+              Contact us today to discuss your website, application, LMS, or digital
+              transformation project and discover how SkillHub Digital can help your
+              organisation achieve its goals.
+            </p>
+            <GlassButton
+              href="/contact"
+              variant="primary"
+              fontFamily="var(--font-playfair)"
+            >
+              Start a conversation
+            </GlassButton>
+          </div>
+
+        </section>
+      </div>
+
     </main>
   )
 }
+      

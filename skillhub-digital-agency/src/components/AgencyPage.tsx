@@ -72,26 +72,25 @@ export default function AgencyPage() {
         },
       }).fromTo(contentEl, { y: '50%' }, { y: '0%', ease: 'none' }, 0.2)
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: element,
-          start: 'top top',
-          end: `+=${heroBoxHeight > contentHeight ? heroBoxHeight : contentHeight}`,
-          scrub: true,
-          pin: true,
-        },
-      })
-
-      tl.fromTo(
-        heroBox,
-        { clipPath: 'polygon(0 0, 100% 0, 100% 50%, 0 50%, 0 50%, 100% 50%, 100% 100%, 0 100%)' },
-        { clipPath: 'polygon(0 0, 100% 0, 100% 0%, 0 0%, 0 100%, 100% 100%, 100% 100%, 0 100%)', duration: 0.4, ease: 'power4.inOut' }
-      )
-
+      // Pin the section and animate each half independently —
+      // top half slides up out of view, bottom half slides down out of view,
+      // revealing the light "What We Believe" world behind them.
+      // The two split_items together look like ONE sentence because they are
+      // stacked flush. No clip-path on the header box itself.
       if (heroHeadings.length >= 2) {
-        tl.fromTo(heroHeadings[0], { y: '0%' }, { y: '-30%', ease: 'power3.inOut' }, 0)
-        tl.fromTo(heroHeadings[1], { y: '0%' }, { y: '30%', ease: 'power3.inOut' }, 0)
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: element,
+            start: 'top top',
+            end: `+=${heroBoxHeight > contentHeight ? heroBoxHeight : contentHeight}`,
+            scrub: true,
+            pin: true,
+          },
+        })
+        .fromTo(heroHeadings[0], { y: '0%', opacity: 1 }, { y: '-100%', opacity: 0, ease: 'power3.inOut' }, 0)
+        .fromTo(heroHeadings[1], { y: '0%', opacity: 1 }, { y: '100%', opacity: 0, ease: 'power3.inOut' }, 0)
       }
+
     })
 
     function parallaxScrollBySpeed(selector: string, speed = 1) {

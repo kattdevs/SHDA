@@ -1,5 +1,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import url('./agency/agency.module.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

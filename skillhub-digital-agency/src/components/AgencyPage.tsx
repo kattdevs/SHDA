@@ -8,57 +8,46 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// ─── Monochrome dev icons (black on light background) ─────────────────────
+// ─── Dev icons — monochrome, recognisable, falling like Alice's objects ──────
 
-const ReactLogo = () => (
+const GitHubIcon = () => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-    <ellipse cx="50" cy="50" rx="45" ry="18" stroke="#000" strokeWidth="3" fill="none" transform="rotate(0 50 50)"/>
-    <ellipse cx="50" cy="50" rx="45" ry="18" stroke="#000" strokeWidth="3" fill="none" transform="rotate(60 50 50)"/>
-    <ellipse cx="50" cy="50" rx="45" ry="18" stroke="#000" strokeWidth="3" fill="none" transform="rotate(120 50 50)"/>
-    <circle cx="50" cy="50" r="6" fill="#000"/>
+    <path fillRule="evenodd" clipRule="evenodd" fill="#000"
+      d="M50 5C25.1 5 5 25.1 5 50c0 19.9 12.9 36.8 30.8 42.8 2.3.4 3.1-1 3.1-2.2v-7.7c-12.6 2.7-15.3-6.1-15.3-6.1-2.1-5.3-5.1-6.7-5.1-6.7-4.1-2.8.3-2.8.3-2.8 4.6.3 7 4.7 7 4.7 4.1 7 10.7 5 13.3 3.8.4-3 1.6-5 2.9-6.1-10.1-1.1-20.7-5-20.7-22.4 0-4.9 1.8-9 4.7-12.1-.5-1.2-2-5.7.4-11.9 0 0 3.8-1.2 12.5 4.7a43.3 43.3 0 0 1 22.8 0c8.7-5.9 12.5-4.7 12.5-4.7 2.5 6.2.9 10.7.4 11.9 2.9 3.2 4.7 7.2 4.7 12.1 0 17.4-10.6 21.2-20.7 22.3 1.6 1.4 3.1 4.2 3.1 8.4v12.5c0 1.2.8 2.6 3.1 2.2C82.1 86.8 95 69.9 95 50 95 25.1 74.9 5 50 5Z"/>
   </svg>
 )
 
-const FigmaLogo = () => (
-  <svg viewBox="0 0 100 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-    <rect x="10" y="10" width="35" height="35" rx="17.5" fill="#000"/>
-    <rect x="55" y="10" width="35" height="35" rx="17.5" fill="#333"/>
-    <rect x="10" y="55" width="35" height="35" rx="17.5" fill="#555"/>
-    <rect x="55" y="55" width="35" height="35" rx="17.5" fill="#222"/>
-    <rect x="10" y="100" width="35" height="35" rx="17.5" fill="#000"/>
-    <circle cx="72.5" cy="117.5" r="17.5" fill="#444"/>
+const TypeScriptIcon = () => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <rect width="100" height="100" rx="8" fill="#000"/>
+    <path fill="white"
+      d="M56.5 51.5V56c1.4.8 3 1.3 4.8 1.3 4.8 0 7.7-2.5 7.7-6.7 0-3.5-2-5.5-6.1-7-2.9-1.1-4-1.8-4-3.3 0-1.4 1.1-2.3 2.9-2.3 1.6 0 3.2.6 4.8 1.6v-4.1c-1.4-.8-3.1-1.2-4.9-1.2-4.5 0-7.3 2.5-7.3 6.5 0 3.4 2.1 5.4 5.9 6.8 3 1.1 4.2 1.9 4.2 3.5 0 1.6-1.2 2.5-3.2 2.5-2 0-3.9-.7-5.8-2.1ZM42 38.3h7.5v-4H28v4h7.5V62H42V38.3Z"/>
   </svg>
 )
 
 const TerminalIcon = () => (
   <svg viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-    <rect x="2" y="2" width="96" height="66" rx="8" stroke="#000" strokeWidth="3" fill="rgba(0,0,0,0.04)"/>
-    <rect x="2" y="2" width="96" height="16" rx="8" fill="rgba(0,0,0,0.08)"/>
-    <circle cx="16" cy="10" r="4" fill="#000"/>
-    <circle cx="30" cy="10" r="4" fill="#555"/>
-    <circle cx="44" cy="10" r="4" fill="#888"/>
-    <text x="12" y="40" fill="#000" fontFamily="monospace" fontSize="11">$ npm run dev</text>
-    <text x="12" y="56" fill="rgba(0,0,0,0.4)" fontFamily="monospace" fontSize="10">▶ ready on localhost:3000</text>
+    <rect x="2" y="2" width="96" height="66" rx="8" stroke="#000" strokeWidth="3" fill="rgba(0,0,0,0.05)"/>
+    <rect x="2" y="2" width="96" height="17" rx="8" fill="rgba(0,0,0,0.1)"/>
+    <circle cx="16" cy="10.5" r="4" fill="#000"/>
+    <circle cx="30" cy="10.5" r="4" fill="#555"/>
+    <circle cx="44" cy="10.5" r="4" fill="#888"/>
+    <text x="12" y="40" fill="#000" fontFamily="monospace" fontSize="11">$ git commit -m &quot;feat&quot;</text>
+    <text x="12" y="56" fill="rgba(0,0,0,0.4)" fontFamily="monospace" fontSize="10">▶ 1 file changed, 42 insertions</text>
   </svg>
 )
 
-const GitIcon = () => (
+const VSCodeIcon = () => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-    <circle cx="50" cy="50" r="45" stroke="#000" strokeWidth="3" fill="none"/>
-    <path d="M72 50L50 28L28 50L50 72L72 50Z" stroke="#000" strokeWidth="3" fill="rgba(0,0,0,0.06)"/>
-    <circle cx="50" cy="28" r="6" fill="#000"/>
-    <circle cx="72" cy="50" r="6" fill="#000"/>
-    <circle cx="50" cy="72" r="6" fill="#000"/>
-    <circle cx="28" cy="50" r="6" fill="#000"/>
-    <line x1="50" y1="28" x2="72" y2="50" stroke="#000" strokeWidth="2"/>
-    <line x1="72" y1="50" x2="50" y2="72" stroke="#000" strokeWidth="2"/>
+    <path fill="#000"
+      d="M74.3 5.4 51.6 27.3 32.9 12.4 5 23.9v52.2l27.9 11.5 18.7-14.9 22.7 21.9L95 87V13L74.3 5.4ZM27.9 64.3 13.6 50l14.3-14.3 14.3 14.3-14.3 14.3ZM50 50 35.7 35.7 50 21.4l14.3 14.3L50 50Zm22.1 14.3L57.8 50l14.3-14.3 14.3 14.3-14.3 14.3Z"/>
   </svg>
 )
 
-const NextjsLogo = () => (
-  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-    <circle cx="50" cy="50" r="45" fill="#000" stroke="#000" strokeWidth="2"/>
-    <path d="M30 70V30l45 55H55V50L30 70Z" fill="white"/>
+const TailwindIcon = () => (
+  <svg viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <path fill="#000"
+      d="M25 7.5C31.7 7.5 35.8 10.8 37.5 17.5c2.5-3.3 5.4-4.6 8.8-3.8 2.4.6 4.2 2.1 5.2 4.5C53.2 13.5 57.3 10.2 64 10.2c8.3 0 12.5 5 12.5 15-1.7-2.5-3.8-3.8-6.3-3.8-4.3 0-6.4 2.5-9.4 6.3C58.5 31.5 55 35 47.5 35c-6.7 0-10.8-3.3-12.5-10-2.5 3.3-5.4 4.6-8.8 3.8-2.4-.6-4.2-2.1-5.2-4.5C19.3 29 15.2 32.5 8.5 32.5 .2 32.5-4 27.5-4 17.5 -2.3 20 -.2 21.3 2.3 21.3c4.3 0 6.4-2.5 9.4-6.3 2.3-3.8 5.8-7.5 13.3-7.5ZM63 35c-6.7 0-10.8-3.3-12.5-10-2.5 3.3-5.4 4.6-8.8 3.8-2.4-.6-4.2-2.1-5.2-4.5C34.8 29 30.7 32.5 24 32.5c-6 0-10-2.9-12-8.8.5 7 4.5 11.3 12 11.3 6.7 0 10.8-3.3 12.5-10 2.5 3.3 5.4 4.6 8.8 3.8 2.4-.6 4.2-2.1 5.2-4.5C52.2 29 56.3 32.5 63 32.5c8.3 0 12.5-5 12.5-15-1.7 2.5-3.8 3.8-6.3 3.8-4.3 0-6.4-2.5-9.4-6.3C57.5 11.2 54 7.5 46.5 7.5"/>
   </svg>
 )
 
@@ -75,14 +64,13 @@ export default function AgencyPage() {
       const contentHeight = contentEl.offsetHeight
 
       gsap.timeline({
-          scrollTrigger: {
-            trigger: element,
-            start: 'top top',
-            end: `+=${heroBoxHeight > contentHeight ? heroBoxHeight : contentHeight}`,
-            scrub: true,
-          },
-        })
-        .fromTo(contentEl, { y: '50%' }, { y: '0%', ease: 'none' }, 0.2)
+        scrollTrigger: {
+          trigger: element,
+          start: 'top top',
+          end: `+=${heroBoxHeight > contentHeight ? heroBoxHeight : contentHeight}`,
+          scrub: true,
+        },
+      }).fromTo(contentEl, { y: '50%' }, { y: '0%', ease: 'none' }, 0.2)
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -102,7 +90,7 @@ export default function AgencyPage() {
 
       if (heroHeadings.length >= 2) {
         tl.fromTo(heroHeadings[0], { y: '0%' }, { y: '-30%', ease: 'power3.inOut' }, 0)
-        tl.fromTo(heroHeadings[1], { y: '0%' }, { y: '30%',  ease: 'power3.inOut' }, 0)
+        tl.fromTo(heroHeadings[1], { y: '0%' }, { y: '30%', ease: 'power3.inOut' }, 0)
       }
     })
 
@@ -123,11 +111,12 @@ export default function AgencyPage() {
       })
     }
 
-    parallaxScrollBySpeed('.hero-reveal__parallax-react', 15)
-    parallaxScrollBySpeed('.hero-reveal__parallax-figma', 13)
-    parallaxScrollBySpeed('.hero-reveal__parallax-nextjs', 6)
-    parallaxScrollBySpeed('.hero-reveal__parallax-git', 23)
+    // Different speeds create the tumbling/falling effect
+    parallaxScrollBySpeed('.hero-reveal__parallax-github', 15)
+    parallaxScrollBySpeed('.hero-reveal__parallax-typescript', 9)
     parallaxScrollBySpeed('.hero-reveal__parallax-terminal', 5)
+    parallaxScrollBySpeed('.hero-reveal__parallax-vscode', 20)
+    parallaxScrollBySpeed('.hero-reveal__parallax-tailwind', 12)
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill())
@@ -137,16 +126,15 @@ export default function AgencyPage() {
   return (
     <main className="agency-main">
 
-      {/* ── 1. Intro ── */}
+      {/* ── 1. Big intro — "Built on Vision. Driven by Creativity." ── */}
       <section className="agency-intro">
         <p className="agency-intro__eyebrow">SkillHub Digital Agency</p>
         <h1 className="agency-intro__heading">
           Built on Vision.<br />Driven by Creativity.
         </h1>
-        <p className="agency-intro__sub">Sandton, Johannesburg · Est. 2024</p>
       </section>
 
-      {/* ── 2. Our Story (dark section) ── */}
+      {/* ── 2. Our Story — heading sits close above the paragraphs ── */}
       <section className="agency-content">
         <article className="agency-article">
           <p className="agency-content__chapter">Our Story</p>
@@ -187,9 +175,13 @@ export default function AgencyPage() {
         </article>
       </section>
 
-      {/* ── 3. GSAP reveal — dark splits to reveal light world ── */}
+      {/* ── 3. GSAP reveal — "WHAT WE BELIEVE" splits ONCE to reveal light world ── */}
       <section className="hero-reveal">
         <article>
+          {/* The two split_items are required for the GSAP clip animation —
+              top half slides up, bottom half slides down, revealing the
+              content behind. There is only ONE visible text instance;
+              the second item is aria-hidden and only exists for the animation. */}
           <header className="hero-reveal__header">
             <div className="hero-reveal_split">
               <div className="hero-reveal_split_item">
@@ -204,16 +196,16 @@ export default function AgencyPage() {
           <div className="hero-reveal__content">
             <div className="hero-reveal__content-inner">
 
-              {/* Monochrome icons floating over the light content */}
+              {/* Dev icons — rotated, positioned to overlap/fall across the text */}
               <div className="hero-reveal__parallax">
-                <div className="hero-reveal__parallax-react"><ReactLogo /></div>
-                <div className="hero-reveal__parallax-figma"><FigmaLogo /></div>
+                <div className="hero-reveal__parallax-github"><GitHubIcon /></div>
+                <div className="hero-reveal__parallax-typescript"><TypeScriptIcon /></div>
                 <div className="hero-reveal__parallax-terminal"><TerminalIcon /></div>
-                <div className="hero-reveal__parallax-git"><GitIcon /></div>
-                <div className="hero-reveal__parallax-nextjs"><NextjsLogo /></div>
+                <div className="hero-reveal__parallax-vscode"><VSCodeIcon /></div>
+                <div className="hero-reveal__parallax-tailwind"><TailwindIcon /></div>
               </div>
 
-              {/* Beliefs — normal article reading layout on the light bg */}
+              {/* Beliefs — readable article layout on the warm cream background */}
               <div className="hero-reveal__content-p">
                 <h2 className="beliefs-title">What We Believe</h2>
 

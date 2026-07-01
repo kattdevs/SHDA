@@ -1,7 +1,7 @@
 import Navbar from '@/components/Navbar'
 import AgencyPage from '@/components/AgencyPage'
 import Footer from '@/components/Footer'
-import './agency.css'
+import styles from './agency.module.css'
  
 export const metadata = {
   title: 'Our Story | SkillHub Digital Agency',

@@ -3,12 +3,13 @@
 import { useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { GlassButton, GlassFilter } from '@/components/ui/liquid-glass'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// ─── Dev icons — monochrome, recognisable, falling like Alice's objects ──────
+// ─── Dev icons — monochrome, falling like Alice's objects ─────────────────
 
 const GitHubIcon = () => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
@@ -20,8 +21,7 @@ const GitHubIcon = () => (
 const TypeScriptIcon = () => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
     <rect width="100" height="100" rx="8" fill="#000"/>
-    <path fill="white"
-      d="M56.5 51.5V56c1.4.8 3 1.3 4.8 1.3 4.8 0 7.7-2.5 7.7-6.7 0-3.5-2-5.5-6.1-7-2.9-1.1-4-1.8-4-3.3 0-1.4 1.1-2.3 2.9-2.3 1.6 0 3.2.6 4.8 1.6v-4.1c-1.4-.8-3.1-1.2-4.9-1.2-4.5 0-7.3 2.5-7.3 6.5 0 3.4 2.1 5.4 5.9 6.8 3 1.1 4.2 1.9 4.2 3.5 0 1.6-1.2 2.5-3.2 2.5-2 0-3.9-.7-5.8-2.1ZM42 38.3h7.5v-4H28v4h7.5V62H42V38.3Z"/>
+    <path fill="white" d="M56.5 51.5V56c1.4.8 3 1.3 4.8 1.3 4.8 0 7.7-2.5 7.7-6.7 0-3.5-2-5.5-6.1-7-2.9-1.1-4-1.8-4-3.3 0-1.4 1.1-2.3 2.9-2.3 1.6 0 3.2.6 4.8 1.6v-4.1c-1.4-.8-3.1-1.2-4.9-1.2-4.5 0-7.3 2.5-7.3 6.5 0 3.4 2.1 5.4 5.9 6.8 3 1.1 4.2 1.9 4.2 3.5 0 1.6-1.2 2.5-3.2 2.5-2 0-3.9-.7-5.8-2.1ZM42 38.3h7.5v-4H28v4h7.5V62H42V38.3Z"/>
   </svg>
 )
 
@@ -39,15 +39,61 @@ const TerminalIcon = () => (
 
 const VSCodeIcon = () => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-    <path fill="#000"
-      d="M74.3 5.4 51.6 27.3 32.9 12.4 5 23.9v52.2l27.9 11.5 18.7-14.9 22.7 21.9L95 87V13L74.3 5.4ZM27.9 64.3 13.6 50l14.3-14.3 14.3 14.3-14.3 14.3ZM50 50 35.7 35.7 50 21.4l14.3 14.3L50 50Zm22.1 14.3L57.8 50l14.3-14.3 14.3 14.3-14.3 14.3Z"/>
+    <path fill="#000" d="M74.3 5.4 51.6 27.3 32.9 12.4 5 23.9v52.2l27.9 11.5 18.7-14.9 22.7 21.9L95 87V13L74.3 5.4ZM27.9 64.3 13.6 50l14.3-14.3 14.3 14.3-14.3 14.3ZM50 50 35.7 35.7 50 21.4l14.3 14.3L50 50Zm22.1 14.3L57.8 50l14.3-14.3 14.3 14.3-14.3 14.3Z"/>
   </svg>
 )
 
 const TailwindIcon = () => (
-  <svg viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-    <path fill="#000"
-      d="M25 7.5C31.7 7.5 35.8 10.8 37.5 17.5c2.5-3.3 5.4-4.6 8.8-3.8 2.4.6 4.2 2.1 5.2 4.5C53.2 13.5 57.3 10.2 64 10.2c8.3 0 12.5 5 12.5 15-1.7-2.5-3.8-3.8-6.3-3.8-4.3 0-6.4 2.5-9.4 6.3C58.5 31.5 55 35 47.5 35c-6.7 0-10.8-3.3-12.5-10-2.5 3.3-5.4 4.6-8.8 3.8-2.4-.6-4.2-2.1-5.2-4.5C19.3 29 15.2 32.5 8.5 32.5 .2 32.5-4 27.5-4 17.5 -2.3 20 -.2 21.3 2.3 21.3c4.3 0 6.4-2.5 9.4-6.3 2.3-3.8 5.8-7.5 13.3-7.5ZM63 35c-6.7 0-10.8-3.3-12.5-10-2.5 3.3-5.4 4.6-8.8 3.8-2.4-.6-4.2-2.1-5.2-4.5C34.8 29 30.7 32.5 24 32.5c-6 0-10-2.9-12-8.8.5 7 4.5 11.3 12 11.3 6.7 0 10.8-3.3 12.5-10 2.5 3.3 5.4 4.6 8.8 3.8 2.4-.6 4.2-2.1 5.2-4.5C52.2 29 56.3 32.5 63 32.5c8.3 0 12.5-5 12.5-15-1.7 2.5-3.8 3.8-6.3 3.8-4.3 0-6.4-2.5-9.4-6.3C57.5 11.2 54 7.5 46.5 7.5"/>
+  <svg viewBox="0 0 54 33" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <path fillRule="evenodd" clipRule="evenodd" fill="#000"
+      d="M27 0C19.8 0 15.3 3.6 13.5 10.8c2.7-3.6 5.85-4.95 9.45-4.05 2.054.513 3.522 2.004 5.147 3.653C30.744 12.672 33.808 15.8 40.5 15.8c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C36.756 3.127 33.692 0 27 0ZM13.5 15.8C6.3 15.8 1.8 19.4 0 26.6c2.7-3.6 5.85-4.95 9.45-4.05 2.054.514 3.522 2.004 5.147 3.653C17.244 28.472 20.308 31.6 27 31.6c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C23.256 18.927 20.192 15.8 13.5 15.8Z"/>
+  </svg>
+)
+
+const ReactIcon = () => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <ellipse cx="50" cy="50" rx="45" ry="18" stroke="#000" strokeWidth="3" fill="none" transform="rotate(0 50 50)"/>
+    <ellipse cx="50" cy="50" rx="45" ry="18" stroke="#000" strokeWidth="3" fill="none" transform="rotate(60 50 50)"/>
+    <ellipse cx="50" cy="50" rx="45" ry="18" stroke="#000" strokeWidth="3" fill="none" transform="rotate(120 50 50)"/>
+    <circle cx="50" cy="50" r="6" fill="#000"/>
+  </svg>
+)
+
+const NpmIcon = () => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <rect width="100" height="100" rx="8" fill="#000"/>
+    <rect x="18" y="30" width="64" height="40" fill="#000"/>
+    <path fill="white" d="M18 30h64v40H62V46H50v24H18z"/>
+  </svg>
+)
+
+const YarnIcon = () => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <circle cx="50" cy="50" r="46" stroke="#000" strokeWidth="3" fill="none"/>
+    <path stroke="#000" strokeWidth="3" strokeLinecap="round" fill="none"
+      d="M28 72c4-8 8-20 6-32M34 40c6-4 16-6 24-4M58 36c4 6 6 16 4 26M62 62c-6 4-14 6-20 4M42 66c-4-4-8-12-6-20"/>
+  </svg>
+)
+
+const RadixIcon = () => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <circle cx="35" cy="30" r="18" fill="#000"/>
+    <rect x="17" y="52" width="36" height="36" rx="4" fill="#000"/>
+    <path d="M53 52 A35 35 0 0 1 88 52 A35 35 0 0 1 53 87Z" fill="#000"/>
+  </svg>
+)
+
+const PnpmIcon = () => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <rect x="5" y="5" width="26" height="26" rx="3" fill="#000"/>
+    <rect x="37" y="5" width="26" height="26" rx="3" fill="#000"/>
+    <rect x="69" y="5" width="26" height="26" rx="3" fill="#000"/>
+    <rect x="5" y="37" width="26" height="26" rx="3" fill="#000"/>
+    <rect x="37" y="37" width="26" height="26" rx="3" fill="rgba(0,0,0,0.3)"/>
+    <rect x="69" y="37" width="26" height="26" rx="3" fill="rgba(0,0,0,0.3)"/>
+    <rect x="5" y="69" width="26" height="26" rx="3" fill="#000"/>
+    <rect x="37" y="69" width="26" height="26" rx="3" fill="rgba(0,0,0,0.3)"/>
+    <rect x="69" y="69" width="26" height="26" rx="3" fill="rgba(0,0,0,0.3)"/>
   </svg>
 )
 
@@ -116,6 +162,11 @@ export default function AgencyPage() {
     parallaxScrollBySpeed('.hero-reveal__parallax-terminal', 5)
     parallaxScrollBySpeed('.hero-reveal__parallax-vscode', 20)
     parallaxScrollBySpeed('.hero-reveal__parallax-tailwind', 12)
+    parallaxScrollBySpeed('.hero-reveal__parallax-react', 7)
+    parallaxScrollBySpeed('.hero-reveal__parallax-npm', 17)
+    parallaxScrollBySpeed('.hero-reveal__parallax-yarn', 11)
+    parallaxScrollBySpeed('.hero-reveal__parallax-radix', 8)
+    parallaxScrollBySpeed('.hero-reveal__parallax-pnpm', 14)
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill())
@@ -124,19 +175,20 @@ export default function AgencyPage() {
 
   return (
     <main className="agency-main">
+      <GlassFilter />
 
-      {/* ── 1. Big intro — "Built on Vision. Driven by Creativity." ── */}
-      <section className="agency-intro">
-        <p className="agency-intro__eyebrow">SkillHub Digital Agency</p>
-        <h1 className="agency-intro__heading">
-          Built on Vision.<br />Driven by Creativity.
-        </h1>
-      </section>
+      <div className="agency-page-wrap">
+        {/* ── 1. Big intro ── */}
+        <section className="agency-intro">
+          <p className="agency-intro__eyebrow">SkillHub Digital Agency</p>
+          <h1 className="agency-intro__heading">
+            Built on Vision.<br />Driven by Creativity.
+          </h1>
+        </section>
 
-      {/* ── 2. Our Story — heading sits close above the paragraphs ── */}
-      <section className="agency-content">
-        <article className="agency-article">
-          <p className="agency-content__chapter">Our Story</p>
+        {/* ── 2. Our Story ── */}
+        <section className="agency-content">
+          <article className="agency-article">
           <p>
             SkillHub Digital Agency was founded by Mr. Jimu with a singular, uncompromising conviction:
             that Africa deserves digital work that holds its own anywhere in the world. Not work that is
@@ -172,9 +224,10 @@ export default function AgencyPage() {
             fosters innovation, and builds long-term partnerships with every client we serve.
           </p>
         </article>
-      </section>
+        </section>
+      </div>
 
-      {/* ── 3. GSAP reveal — "WHAT WE BELIEVE" splits ONCE to reveal light world ── */}
+      {/* ── 3. GSAP reveal — full width needed for the clip animation ── */}
       <section className="hero-reveal">
         <article>
           {/* The two split_items are required for the GSAP clip animation —
@@ -202,6 +255,11 @@ export default function AgencyPage() {
                 <div className="hero-reveal__parallax-terminal"><TerminalIcon /></div>
                 <div className="hero-reveal__parallax-vscode"><VSCodeIcon /></div>
                 <div className="hero-reveal__parallax-tailwind"><TailwindIcon /></div>
+                <div className="hero-reveal__parallax-react"><ReactIcon /></div>
+                <div className="hero-reveal__parallax-npm"><NpmIcon /></div>
+                <div className="hero-reveal__parallax-yarn"><YarnIcon /></div>
+                <div className="hero-reveal__parallax-radix"><RadixIcon /></div>
+                <div className="hero-reveal__parallax-pnpm"><PnpmIcon /></div>
               </div>
 
               {/* Beliefs — readable article layout on the warm cream background */}
@@ -255,24 +313,32 @@ export default function AgencyPage() {
       </section>
 
       {/* ── 4. Closing (back to dark) ── */}
-      <section>
-        <div className="agency-content--after">
-          <p>
-            SkillHub Digital is not a large agency with hundreds of clients and an anonymous
-            production line. We are a focused, intentional studio — small enough to care deeply
-            about every brief, experienced enough to execute it with confidence. Every project
-            we take on gets the full weight of our thinking, not a template and a timeline.
-          </p>
-          <p>
-            Our home is Sandton, Johannesburg. Our ambition is continental. If you are building
-            something that matters — a brand, a product, a digital experience that should outlast
-            the trend cycle — we would like to be part of it.
-          </p>
-        </div>
-        <div className="agency-cta">
-          <a href="/contact">Start a conversation →</a>
-        </div>
-      </section>
+      <div className="agency-page-wrap">
+        <section>
+          <div className="agency-content--after">
+            <p>
+              SkillHub Digital is not a large agency with hundreds of clients and an anonymous
+              production line. We are a focused, intentional studio — small enough to care deeply
+              about every brief, experienced enough to execute it with confidence. Every project
+              we take on gets the full weight of our thinking, not a template and a timeline.
+            </p>
+            <p>
+              Our home is Sandton, Johannesburg. Our ambition is continental. If you are building
+              something that matters — a brand, a product, a digital experience that should outlast
+              the trend cycle — we would like to be part of it.
+            </p>
+          </div>
+          <div className="agency-cta">
+            <GlassButton
+              href="/contact"
+              variant="primary"
+              fontFamily="var(--font-playfair)"
+            >
+              Start a conversation
+            </GlassButton>
+          </div>
+        </section>
+      </div>
 
     </main>
   )
